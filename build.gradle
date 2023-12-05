@@ -1,0 +1,55 @@
+plugins {
+    id 'java'
+    id 'io.qameta.allure' version '2.10.0'
+}
+
+configurations {
+    agent
+}
+
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+
+dependencies {
+    // JUnit 5
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter-engine:5.8.0'
+
+    // Rest Assured
+    testImplementation 'io.rest-assured:rest-assured:4.4.0'
+
+    // Allure
+    testImplementation 'io.qameta.allure:allure-junit5:2.24.0'
+    testImplementation 'org.aspectj:aspectjweaver:1.9.20.1'
+    agent 'org.aspectj:aspectjweaver:1.9.7'
+
+    // SimpleLogger
+    testImplementation 'org.slf4j:slf4j-simple:1.7.32'
+
+    // Дополнительные библиотеки
+    testImplementation 'com.google.guava:guava:31.0-jre'
+    testImplementation 'org.apache.commons:commons-lang3:3.12.0'
+    testImplementation 'org.apache.httpcomponents:httpclient:4.5.13'
+    testImplementation 'org.json:json:20210307'
+    testImplementation 'com.fasterxml.jackson.core:jackson-databind:2.13.0'
+}
+
+test {
+    useJUnitPlatform()
+    testLogging {
+        events "PASSED", "FAILED", "SKIPPED"
+
+        // Конфигурируйте javaagent для выполнения тестов
+        jvmArgs = ["-javaagent:${configurations.agent.singleFile}"]
+    }
+
+}
+
+// Укажите расположение результатов Allure
+allure {
+    version = '2.24.0'
+}
